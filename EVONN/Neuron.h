@@ -1,4 +1,5 @@
 #pragma once
+#include <stdlib.h>
 
 enum DataType {
 	DT_UNDEFINED = 0,
@@ -22,6 +23,36 @@ struct Data {
 		double r;
 		vec2 v;
 	};
+	// nasty fix
+	Data() {
+		dt = DT_UNDEFINED;
+		u = 0;
+	} 
+	Data(DataType dt) {
+		this->dt = dt;
+		switch (dt)
+		{
+		case DT_BOOLEAN:
+			b = (rand() % 2 == 0);
+			break;
+		case DT_NATURAL:
+			u = rand();
+			break;
+		case DT_INTEGER:
+			s = rand()-(RAND_MAX/2);
+			break;
+		case DT_REAL:
+			r = (double(rand()) / RAND_MAX)*2 - 1;
+			break;
+		case DT_VECTOR:
+			v.x = (float(rand()) / RAND_MAX) * 2 - 1;
+			v.y = (float(rand()) / RAND_MAX) * 2 - 1;
+			break;
+		default:
+			u = 0;
+			break;
+		}
+	}
 	Data(bool b) {
 		this->b = b;
 		dt = DT_BOOLEAN;
@@ -95,8 +126,6 @@ struct Data {
 		dt = DT_VECTOR;
 	}
 };
-
-
 
 class Neuron
 {

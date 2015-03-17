@@ -8,6 +8,7 @@ struct BrainSchema {
 	std::vector<Data> constants;
 	std::vector<DataType> input;
 	std::vector<DataType> output;
+	std::vector<DataType> variables;
 	void addConstant(Data d) {
 		constants.push_back(d);
 	}
@@ -17,10 +18,20 @@ struct BrainSchema {
 	void addOutput(DataType dt) {
 		output.push_back(dt);
 	}
+	void addVariable(DataType dt) {
+		output.push_back(dt);
+	}
 };
 
 class Brain
 {
+	std::vector<Data> values;
+	std::vector<Neuron> neurons;
+	unsigned inputSize;
+	unsigned constantSize;
+	unsigned outputSize;
+	unsigned hiddenSize;
+	unsigned variableSize;
 public:
 	Brain(std::string fname);
 	Brain(const BrainSchema &schema);
