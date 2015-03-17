@@ -50,6 +50,11 @@ Brain* Trainer::getBest() {
 	return ret;
 }
 
+double Trainer::getBestFitness() {
+	if (data.size() > 0) return data[0].score;
+	else return 0.0;
+}
+
 void Trainer::readFolder() {
 	DIR *pdir = NULL;
 	struct dirent *pent = NULL;

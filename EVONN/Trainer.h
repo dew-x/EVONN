@@ -28,6 +28,7 @@ public:
 	~Trainer();
 	Brain* getRandom(const BrainSchema &schema);
 	Brain* getBest();
+	double getBestFitness();
 private:
 	void readFolder();
 	void indexFile(std::string fname, double score);

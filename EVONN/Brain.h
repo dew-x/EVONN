@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Neuron.h"
+#include "tinyxml2.h"
 
 struct BrainSchema {
 	std::vector<Data> constants;
