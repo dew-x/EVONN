@@ -1,5 +1,8 @@
 #pragma once
 #include <stdlib.h>
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 enum DataType {
 	DT_UNDEFINED = 0,
@@ -124,6 +127,11 @@ struct Data {
 	void setValue(float x, float y) {
 		this->v = { x, y };
 		dt = DT_VECTOR;
+	}
+	std::string hexStr() {
+		std::ostringstream stringStream;
+		stringStream << std::setfill('0') << std::setw(16) << std::hex << u;
+		return stringStream.str();
 	}
 };
 
