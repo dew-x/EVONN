@@ -55,6 +55,16 @@ double Trainer::getBestFitness() {
 	else return 0.0;
 }
 
+void Trainer::add(Brain *brain, double score) {
+	if (score > data[data.size() - 1].score) {
+		std::string fname = mkFname(score);
+		if (!fileExists(fname)) {
+			brain->store(folder + "/" + fname);
+			indexFile(fname, score);
+		}
+	}
+}
+
 void Trainer::readFolder() {
 	DIR *pdir = NULL;
 	struct dirent *pent = NULL;
@@ -113,4 +123,15 @@ void Trainer::sortDataBack(unsigned pos) {
 
 void Trainer::deleteFile(std::string fname) {
 	remove((folder+"/"+fname).c_str());
+}
+
+std::string Trainer::mkFname(double score) {
+	std::ostringstream out;
+	out << std::fixed << std::setprecision(15) << score << ".xml";
+	return out.str();
+}
+
+bool Trainer::fileExists(std::string fname) {
+	std::ifstream infile((folder+"/"+fname).c_str());
+	return infile.good();
 }

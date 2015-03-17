@@ -25,6 +25,7 @@ public:
 	Brain(std::string fname);
 	Brain(const BrainSchema &schema);
 	~Brain();
+	void store(std::string fname);
 	void tweak();
 };
 

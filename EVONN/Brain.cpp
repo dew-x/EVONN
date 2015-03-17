@@ -14,6 +14,10 @@ Brain::~Brain()
 {
 }
 
+void Brain::store(std::string fname) {
+
+}
+
 void Brain::tweak() {
 
 }

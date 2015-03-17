@@ -2,6 +2,9 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <sstream>
+#include <iomanip>
+#include <fstream>
 #include "dirent.h"
 #include "Brain.h"
 
@@ -29,11 +32,14 @@ public:
 	Brain* getRandom(const BrainSchema &schema);
 	Brain* getBest();
 	double getBestFitness();
+	void add(Brain *brain, double score);
 private:
 	void readFolder();
 	void indexFile(std::string fname, double score);
 	void sortData();
 	void sortDataBack(unsigned pos);
 	void deleteFile(std::string fname);
+	std::string mkFname(double score);
+	bool fileExists(std::string fname);
 };
 
