@@ -19,3 +19,8 @@ Neuron::~Neuron()
 Data Neuron::eval(std::vector<Data> values) {
 	return Data();
 }
+
+void Neuron::prepareConstants() {
+
+}
+

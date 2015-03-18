@@ -26,9 +26,11 @@ Brain::Brain(const BrainSchema &schema)
 	for (unsigned i = 0; i < outputSize; ++i) {
 		values[i + inputSize + constantSize + variableSize + hiddenSize].dt = schema.output[i];
 	}
-	for (unsigned i = 0; i < hiddenSize+outputSize; ++i) {
-		// gen random
-		neurons[i] = Neuron(values,i,values[i].dt);
+	for (unsigned i = 0; i < hiddenSize; ++i) {
+		neurons[i] = Neuron(values,i,DT_UNDEFINED);
+	}
+	for (unsigned i = hiddenSize; i < outputSize + hiddenSize; ++i) {
+		neurons[i] = Neuron(values, i, values[i].dt);
 	}
 }
 
@@ -68,26 +70,31 @@ void Brain::store(std::string fname) {
 		printer.OpenElement("data");
 		printer.OpenElement("type");
 		printer.PushText(values[i].dt);
-		printer.CloseElement();
+		printer.CloseElement();//type
 		printer.OpenElement("value");
 		printer.PushText(values[i].hexStr().c_str(),false);
-		printer.CloseElement();
-		printer.CloseElement();
+		printer.CloseElement();//value
+		printer.CloseElement();//data
 	}
-	printer.CloseElement();
-	/*for (unsigned i = 0; i < output + hidden; ++i) {
-		printer.OpenElement("node");
-		printer.PushAttribute("inf", nodes[i].in);
-		printer.PushAttribute("outf", nodes[i].out);
-		printer.PushAttribute("size", nodes[i].ids.size());
-		for (unsigned j = 0; j < nodes[i].ids.size(); ++j) {
-			printer.OpenElement("link");
-			printer.PushText(nodes[i].ids[j]);
-			printer.CloseElement();
-		}
+	printer.CloseElement();//dataList
+	printer.OpenElement("neurons");
+	for (unsigned i = 0; i < hiddenSize + outputSize; ++i) {
+		printer.OpenElement("neuron");
+		printer.OpenElement("id");
+		printer.PushText(neurons[i].getId());
 		printer.CloseElement();
-	}*/
-	printer.CloseElement();
+		printer.OpenElement("links");
+		std::vector<unsigned> links = neurons[i].getLinks();
+		for (unsigned j = 0; j < links.size(); ++j) {
+			printer.OpenElement("id");
+			printer.PushText(links[j]);
+			printer.CloseElement(); // id
+		}
+		printer.CloseElement();//links
+		printer.CloseElement();//neuron
+	}
+	printer.CloseElement();//neurons
+	printer.CloseElement();//brain
 	doc.Parse(printer.CStr());
 	doc.SaveFile(fname.c_str());
 }

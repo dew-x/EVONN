@@ -22,5 +22,7 @@ class Neuron {
 		unsigned getId() { return id; }
 		std::vector<unsigned> getLinks() { return links; }
 		DataType getOutput() { return output; }
+	private:
+		void prepareConstants();
 };
 
