@@ -13,7 +13,7 @@ Brain::Brain(const BrainSchema &schema)
 	variableSize = schema.variables.size();
 	hiddenSize = (rand() % (inputSize + outputSize + hiddenSize + variableSize)) + 1;
 	values = std::vector<Data>(inputSize + constantSize + variableSize + hiddenSize + outputSize);
-	neurons = std::vector<Neuron>(hiddenSize + outputSize);
+	neurons = std::vector<Neuron> (hiddenSize + outputSize);
 	for (unsigned i = 0; i < inputSize; ++i) {
 		values[i].dt = schema.input[i];
 	}
@@ -28,7 +28,7 @@ Brain::Brain(const BrainSchema &schema)
 	}
 	for (unsigned i = 0; i < hiddenSize+outputSize; ++i) {
 		// gen random
-		neurons[i] = Neuron();
+		neurons[i] = Neuron(values,i,values[i].dt);
 	}
 }
 
