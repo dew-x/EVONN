@@ -132,4 +132,9 @@ struct Data {
 		stringStream << std::setfill('0') << std::setw(16) << std::hex << u;
 		return stringStream.str();
 	}
+	void parseHexStr(std::string str) {
+		std::stringstream ss;
+		ss << std::hex << str;
+		ss >> u;
+	}
 };

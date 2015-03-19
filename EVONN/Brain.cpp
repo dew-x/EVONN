@@ -3,6 +3,25 @@
 
 Brain::Brain(std::string fname)
 {
+	tinyxml2::XMLDocument doc;
+	doc.LoadFile(fname.c_str());
+	// first element
+	tinyxml2::XMLNode *rootnode = doc.FirstChild();
+	rootnode->FirstChildElement("input")->QueryUnsignedText((unsigned*)&inputSize);
+	rootnode->FirstChildElement("constant")->QueryUnsignedText((unsigned*)&constantSize);
+	rootnode->FirstChildElement("variable")->QueryUnsignedText((unsigned*)&variableSize);
+	rootnode->FirstChildElement("hidden")->QueryUnsignedText((unsigned*)&hiddenSize);
+	rootnode->FirstChildElement("output")->QueryUnsignedText((unsigned*)&outputSize);
+	values = std::vector<Data>(inputSize + constantSize + variableSize + hiddenSize + outputSize);
+	neurons = std::vector<Neuron>(hiddenSize + outputSize);
+	tinyxml2::XMLNode *dataListNode = rootnode->FirstChildElement("dataList");
+	tinyxml2::XMLNode *dataNode = dataListNode->FirstChildElement("data");
+	for (unsigned i = 0; i < inputSize + constantSize + variableSize + hiddenSize + outputSize; ++i) {
+		dataNode->FirstChildElement("type")->QueryUnsignedText((unsigned*)&values[i].dt);
+		std::string value=dataNode->FirstChildElement("value")->GetText();
+		values[i].parseHexStr(value);
+		dataNode = dataNode->NextSibling();
+	}
 }
 
 Brain::Brain(const BrainSchema &schema)
