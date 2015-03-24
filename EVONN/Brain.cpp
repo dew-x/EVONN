@@ -63,11 +63,21 @@ Brain::Brain(const BrainSchema &schema)
 		values[i + inputSize + constantSize + variableSize + hiddenSize].dt = schema.output[i];
 	}
 	for (unsigned i = 0; i < hiddenSize; ++i) {
-		neurons[i] = Neuron(values, i + inputSize + constantSize + variableSize, DT_UNDEFINED);
+		try {
+			neurons[i] = Neuron(values, i + inputSize + constantSize + variableSize, DT_UNDEFINED);
+		}
+		catch (int e) {
+			std::cout << "ERROR: " << e << std::endl;
+		}
 		values[i + inputSize + constantSize + variableSize].dt = neurons[i].getOutput();
 	}
 	for (unsigned i = hiddenSize; i < outputSize + hiddenSize; ++i) {
-		neurons[i] = Neuron(values, i + inputSize + constantSize + variableSize, values[i].dt);
+		try {
+			neurons[i] = Neuron(values, i + inputSize + constantSize + variableSize, values[i].dt);
+		}
+		catch (int e) {
+			std::cout << "ERROR: " << e << std::endl;
+		}
 	}
 }
 
@@ -138,4 +148,28 @@ void Brain::store(std::string fname) {
 
 void Brain::tweak() {
 
+}
+
+void Brain::eval(const std::vector<Data> &input, std::vector<Data> &output) {
+	// prepare input
+	for (unsigned i = 0; i < inputSize; ++i) {
+		if (values[i].dt == input[i].dt) {
+			values[i].u = input[i].u;
+		}
+		else {
+			throw std::invalid_argument("BAD INPUT");
+		}
+	}
+	// run neurons
+	for (unsigned i = 0; i < hiddenSize + outputSize; ++i) {
+		Data value=neurons[i].eval(values);
+		std::cout << i <<" ";
+		value.print();
+		values[inputSize + constantSize + variableSize + i] = value;
+	}
+	// copy output
+	output = std::vector<Data>(outputSize);
+	for (unsigned i = 0; i < outputSize; ++i) {
+		output[i] = values[i + inputSize + constantSize + variableSize + hiddenSize];
+	}
 }

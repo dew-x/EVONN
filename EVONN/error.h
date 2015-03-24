@@ -1,0 +1,7 @@
+#pragma once
+enum error_t {
+	UNKNOWN_ERROR,
+	BAD_INPUT,
+	NO_POSSIBLE_NEURONS_ERROR,
+	CANT_DO_THAT_ERROR
+};

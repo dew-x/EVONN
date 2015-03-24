@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string>
 #include <sstream>
+#include <iostream>
 #include <iomanip>
+#include "error.h"
 
 enum DataType {
 	DT_UNDEFINED = 0,
@@ -139,5 +141,41 @@ struct Data {
 		std::stringstream ss;
 		ss << std::hex << str;
 		ss >> u;
+	}
+	signed long long getAsSigned() {
+		if (dt == DT_SIGNED) return s;
+		else if (dt == DT_UNSIGNED) return (signed long long) u;
+		else throw CANT_DO_THAT_ERROR;
+	}
+	double getAsReal() {
+		if (dt == DT_REAL) return r;
+		else if (dt == DT_UNSIGNED) return (double)u;
+		else if (dt == DT_SIGNED) return (double)s;
+		else throw CANT_DO_THAT_ERROR;
+	}
+	void print() {
+		switch (dt)
+		{
+		case DT_UNDEFINED:
+			std::cout << "UNDEFINED" << std::endl;
+			break;
+		case DT_BOOLEAN:
+			std::cout << "BOOL("<<b<<")" << std::endl;
+			break;
+		case DT_UNSIGNED:
+			std::cout << "UNSIGNED(" << u << ")" << std::endl;
+			break;
+		case DT_SIGNED:
+			std::cout << "SIGNED(" << s << ")" << std::endl;
+			break;
+		case DT_REAL:
+			std::cout << "REAL(" << r << ")" << std::endl;
+			break;
+		case DT_VECTOR:
+			std::cout << "VECTOR(" << v.x<<","<<v.y << ")" << std::endl;
+			break;
+		default:
+			break;
+		}
 	}
 };

@@ -26,6 +26,7 @@ public:
 	DataType getOutput() { return returns; }
 	bool isPossible(const std::vector<Data> &values, unsigned position, DataType returns);
 	std::vector<unsigned> doLinks(const std::vector<Data> &values, unsigned position);
+	Data virtual eval(std::vector<Data> &input) = 0;
 };
 
 class NF_sum_u : public NeuronFunction {
@@ -35,6 +36,14 @@ class NF_sum_u : public NeuronFunction {
 			requires = {
 				{ DT_UNSIGNED,2,REQ_MIN }
 			};
+		}
+		Data eval(std::vector<Data> &input) {
+			Data ret(returns);
+			ret.u = 0;
+			for (unsigned i = 0; i < input.size(); ++i) {
+				ret.u += input[i].u;
+			}
+			return ret;
 		}
 };
 
@@ -46,6 +55,14 @@ class NF_sum_r : public NeuronFunction {
 				{ DT_NUMBER, 2,REQ_MIN }
 			};
 		}
+		Data eval(std::vector<Data> &input) {
+			Data ret(returns);
+			ret.r = 0;
+			for (unsigned i = 0; i < input.size(); ++i) {
+				ret.r += input[i].getAsReal();
+			}
+			return ret;
+		}
 };
 
 class NF_sum_s : public NeuronFunction {
@@ -55,6 +72,14 @@ class NF_sum_s : public NeuronFunction {
 			requires = {
 				{ DT_INTEGER, 2, REQ_MIN }
 			};
+		}
+		Data eval(std::vector<Data> &input) {
+			Data ret(returns);
+			ret.s = 0;
+			for (unsigned i = 0; i < input.size(); ++i) {
+				ret.s += input[i].getAsSigned();
+			}
+			return ret;
 		}
 };
 

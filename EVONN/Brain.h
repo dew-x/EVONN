@@ -3,6 +3,8 @@
 #include <vector>
 #include "Neuron.h"
 #include "tinyxml2.h"
+#include "error.h"
+#include <stdexcept>
 
 struct BrainSchema {
 	std::vector<Data> constants;
@@ -38,5 +40,6 @@ public:
 	~Brain();
 	void store(std::string fname);
 	void tweak();
+	void eval(const std::vector<Data> &input, std::vector<Data> &output);
 };
 
