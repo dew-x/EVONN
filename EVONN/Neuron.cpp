@@ -21,6 +21,7 @@ Neuron::Neuron(const std::vector<Data> &values, unsigned position, DataType retu
 Neuron::Neuron(unsigned id, const std::vector<unsigned> &links)
 {
 	prepareConstants();
+	this->id = id;
 	this->links = std::vector<unsigned>(links.size());
 	for (unsigned i = 0; i < links.size(); ++i) {
 		this->links[i] = links[i];

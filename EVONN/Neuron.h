@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
+#include <iostream>
 #include "NeuronFunction.h"
 #include "data.h"
 

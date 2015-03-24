@@ -10,6 +10,9 @@ int main() {
 	}
 	schema.addOutput(DT_SIGNED);
 	Trainer t("train", CONSTANT, 200, 25);
-	Brain b("test.xml");
-	b.store("test2.xml");
+	Brain b(schema);
+	b.store("test.xml");
+	Brain b1("test.xml");
+	b1.store("test2.xml");
+	system("PAUSE");
 }

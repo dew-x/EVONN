@@ -22,6 +22,23 @@ Brain::Brain(std::string fname)
 		values[i].parseHexStr(value);
 		dataNode = dataNode->NextSibling();
 	}
+	tinyxml2::XMLNode *neuronsNode = rootnode->FirstChildElement("neurons");
+	tinyxml2::XMLNode *neuronNode = neuronsNode->FirstChildElement("neuron");
+	for (unsigned i = 0; i < hiddenSize + outputSize; ++i) {
+		unsigned id;
+		neuronNode->FirstChildElement("id")->QueryUnsignedText(&id);
+		std::vector<unsigned> links(0);
+		tinyxml2::XMLNode *linksNode = neuronNode->FirstChildElement("links");
+		tinyxml2::XMLNode *linkNode = linksNode->FirstChildElement("link");
+		while (linkNode!=0) {
+			unsigned link;
+			linkNode->ToElement()->QueryUnsignedText(&link);
+			links.push_back(link);
+			linkNode = linkNode->NextSibling();
+		}
+		neurons[i] = Neuron(id, links);
+		neuronNode = neuronNode->NextSibling();
+	}
 }
 
 Brain::Brain(const BrainSchema &schema)
@@ -46,10 +63,11 @@ Brain::Brain(const BrainSchema &schema)
 		values[i + inputSize + constantSize + variableSize + hiddenSize].dt = schema.output[i];
 	}
 	for (unsigned i = 0; i < hiddenSize; ++i) {
-		neurons[i] = Neuron(values,i,DT_UNDEFINED);
+		neurons[i] = Neuron(values, i + inputSize + constantSize + variableSize, DT_UNDEFINED);
+		values[i + inputSize + constantSize + variableSize].dt = neurons[i].getOutput();
 	}
 	for (unsigned i = hiddenSize; i < outputSize + hiddenSize; ++i) {
-		neurons[i] = Neuron(values, i, values[i].dt);
+		neurons[i] = Neuron(values, i + inputSize + constantSize + variableSize, values[i].dt);
 	}
 }
 
@@ -105,7 +123,7 @@ void Brain::store(std::string fname) {
 		printer.OpenElement("links");
 		std::vector<unsigned> links = neurons[i].getLinks();
 		for (unsigned j = 0; j < links.size(); ++j) {
-			printer.OpenElement("id");
+			printer.OpenElement("link");
 			printer.PushText(links[j]);
 			printer.CloseElement(); // id
 		}
