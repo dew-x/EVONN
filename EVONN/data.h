@@ -2,14 +2,17 @@
 #include <stdlib.h>
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 enum DataType {
 	DT_UNDEFINED = 0,
 	DT_BOOLEAN = 1,
-	DT_NATURAL = 2,
-	DT_INTEGER = 4,
+	DT_UNSIGNED = 2,
+	DT_SIGNED = 4,
 	DT_REAL = 8,
 	DT_VECTOR = 16,
+	DT_NUMBER = DT_UNSIGNED | DT_SIGNED | DT_REAL,
+	DT_INTEGER = DT_UNSIGNED | DT_SIGNED
 };
 
 struct vec2 {
@@ -37,10 +40,10 @@ struct Data {
 		case DT_BOOLEAN:
 			b = (rand() % 2 == 0);
 			break;
-		case DT_NATURAL:
+		case DT_UNSIGNED:
 			u = rand();
 			break;
-		case DT_INTEGER:
+		case DT_SIGNED:
 			s = rand() - (RAND_MAX / 2);
 			break;
 		case DT_REAL:
@@ -61,19 +64,19 @@ struct Data {
 	}
 	Data(unsigned long long u) {
 		this->u = u;
-		dt = DT_NATURAL;
+		dt = DT_UNSIGNED;
 	}
 	Data(unsigned u) {
 		this->u = (unsigned long long)u;
-		dt = DT_NATURAL;
+		dt = DT_UNSIGNED;
 	}
 	Data(signed long long s) {
 		this->s = s;
-		dt = DT_INTEGER;
+		dt = DT_SIGNED;
 	}
 	Data(int s) {
 		this->s = (signed long long)s;
-		dt = DT_INTEGER;
+		dt = DT_SIGNED;
 	}
 	Data(double r) {
 		this->r = r;
@@ -97,19 +100,19 @@ struct Data {
 	}
 	void setValue(unsigned long long u) {
 		this->u = u;
-		dt = DT_NATURAL;
+		dt = DT_UNSIGNED;
 	}
 	void setValue(unsigned u) {
 		this->u = (unsigned long long)u;
-		dt = DT_NATURAL;
+		dt = DT_UNSIGNED;
 	}
 	void setValue(signed long long s) {
 		this->s = s;
-		dt = DT_INTEGER;
+		dt = DT_SIGNED;
 	}
 	void setValue(int s) {
 		this->s = (signed long long)s;
-		dt = DT_INTEGER;
+		dt = DT_SIGNED;
 	}
 	void setValue(double r) {
 		this->r = r;

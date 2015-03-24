@@ -6,9 +6,9 @@ int main() {
 	schema.addConstant(Data((int)1));
 	schema.addConstant(Data((int)-1));
 	for (int i = 0; i < 10; ++i) {
-		schema.addInput(DT_INTEGER);
+		schema.addInput(DT_SIGNED);
 	}
-	schema.addOutput(DT_INTEGER);
+	schema.addOutput(DT_SIGNED);
 	Trainer t("train", CONSTANT, 200, 25);
 	Brain b("test.xml");
 	b.store("test2.xml");

@@ -10,18 +10,18 @@
 class Neuron {
 	private:
 		std::vector<unsigned> links;
+		std::vector<NeuronFunction> functions;
 		unsigned id;
-		DataType output;
 		NeuronFunction func;
 	public:
 		Neuron();
-		Neuron(std::vector<Data> values, unsigned position, DataType returns);
+		Neuron(const std::vector<Data> &values, unsigned position, DataType returns);
 		Neuron(unsigned id, const std::vector<unsigned> &links);
 		~Neuron();
 		Data eval(std::vector<Data> values);
 		unsigned getId() { return id; }
 		std::vector<unsigned> getLinks() { return links; }
-		DataType getOutput() { return output; }
+		DataType getOutput() { return func.getOutput(); }
 	private:
 		void prepareConstants();
 };
