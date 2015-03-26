@@ -83,3 +83,107 @@ class NF_sum_s : public NeuronFunction {
 		}
 };
 
+class NF_sum_v : public NeuronFunction {
+	public:
+		NF_sum_v() {
+			returns = DT_VECTOR;
+			requires = {
+				{ DT_VECTOR, 2, REQ_MIN }
+			};
+		}
+		Data eval(std::vector<Data> &input) {
+			Data ret(returns);
+			ret.v.x = 0;
+			ret.v.y = 0;
+			for (unsigned i = 0; i < input.size(); ++i) {
+				ret.v.x += input[i].v.x;
+				ret.v.y += input[i].v.y;
+			}
+			return ret;
+		}
+};
+
+class NF_if_u : public NeuronFunction {
+	public:
+		NF_if_u() {
+			returns = DT_UNSIGNED;
+			requires = {
+				{ DT_BOOLEAN, 1, REQ_FIXED },
+				{ DT_UNSIGNED, 2, REQ_FIXED }
+			};
+		}
+		Data eval(std::vector<Data> &input) {
+			Data ret(returns);
+			if (input[0].b) ret.u = input[1].u;
+			else ret.u = input[2].u;
+			return ret;
+		}
+};
+
+class NF_if_s : public NeuronFunction {
+	public:
+		NF_if_s() {
+			returns = DT_SIGNED;
+			requires = {
+				{ DT_BOOLEAN, 1, REQ_FIXED },
+				{ DT_INTEGER, 2, REQ_FIXED }
+			};
+		}
+		Data eval(std::vector<Data> &input) {
+			Data ret(returns);
+			if (input[0].b) ret.s = input[1].getAsSigned();
+			else ret.s = input[2].getAsSigned();
+			return ret;
+		}
+};
+
+class NF_if_r : public NeuronFunction {
+	public:
+		NF_if_r() {
+			returns = DT_REAL;
+			requires = {
+				{ DT_BOOLEAN, 1, REQ_FIXED },
+				{ DT_NUMBER, 2, REQ_FIXED }
+			};
+		}
+		Data eval(std::vector<Data> &input) {
+			Data ret(returns);
+			if (input[0].b) ret.r = input[1].getAsReal();
+			else ret.r = input[2].getAsReal();
+			return ret;
+		}
+};
+
+class NF_if_v : public NeuronFunction {
+public:
+	NF_if_v() {
+		returns = DT_VECTOR;
+		requires = {
+			{ DT_BOOLEAN, 1, REQ_FIXED },
+			{ DT_VECTOR, 2, REQ_FIXED }
+		};
+	}
+	Data eval(std::vector<Data> &input) {
+		Data ret(returns);
+		if (input[0].b) ret.v = input[1].v;
+		else ret.v = input[2].v;
+		return ret;
+	}
+};
+
+class NF_if_v : public NeuronFunction {
+public:
+	NF_if_v() {
+		returns = DT_BOOLEAN;
+		requires = {
+			{ DT_BOOLEAN, 3, REQ_FIXED }
+		};
+	}
+	Data eval(std::vector<Data> &input) {
+		Data ret(returns);
+		if (input[0].b) ret.b = input[1].b;
+		else ret.b = input[2].b;
+		return ret;
+	}
+};
+

@@ -50,7 +50,8 @@ void Neuron::prepareConstants() {
 	functions = {
 		new NF_sum_u(),
 		new NF_sum_r(),
-		new NF_sum_s()
+		new NF_sum_s(),
+		new NF_sum_v(),
 	};
 }
 
