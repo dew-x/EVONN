@@ -171,9 +171,9 @@ public:
 	}
 };
 
-class NF_if_v : public NeuronFunction {
+class NF_if_b : public NeuronFunction {
 public:
-	NF_if_v() {
+	NF_if_b() {
 		returns = DT_BOOLEAN;
 		requires = {
 			{ DT_BOOLEAN, 3, REQ_FIXED }

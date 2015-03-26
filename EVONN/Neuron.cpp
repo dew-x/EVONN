@@ -52,6 +52,11 @@ void Neuron::prepareConstants() {
 		new NF_sum_r(),
 		new NF_sum_s(),
 		new NF_sum_v(),
+		new NF_if_u(),
+		new NF_if_s(),
+		new NF_if_r(),
+		new NF_if_v(),
+		new NF_if_b(),
 	};
 }
 
